@@ -1,0 +1,158 @@
+<html><head><base href="https://pizza-poolish-calculator.com/" target="_blank"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Pizza Poolish and Dough Calculator</title><style>
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+.calculator {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 30px;
+    width: 400px;
+}
+h1 {
+    color: #d32f2f;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+h3 {
+    color: #d32f2f;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+input:focus {
+    border-color: #d32f2f;
+    outline: none;
+}
+button {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+button:hover {
+    background-color: #b71c1c;
+}
+#result {
+    margin-top: 30px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    font-size: 16px;
+    line-height: 1.6;
+}
+.ingredient {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+.ingredient-name {
+    font-weight: bold;
+}
+.result-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+.result-section:last-child {
+    border-bottom: none;
+}
+</style></head>
+<body>
+    <div class="calculator">
+        <h1>Pizza Poolish and Dough Calculator</h1>
+        <label for="pizzas">Number of Pizzas:</label>
+        <input type="number" id="pizzas" min="1" value="1">
+        <button onclick="calculateRecipe()">Calculate Recipe</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculateRecipe() {
+            const pizzas = parseInt(document.getElementById('pizzas').value);
+            
+            if (isNaN(pizzas) || pizzas < 1) {
+                document.getElementById('result').innerHTML = "Please enter a valid number of pizzas (minimum 1).";
+                return;
+            }
+
+            const poolishIngredients = {
+                'Water': { amount: 30, unit: 'ml' },
+                'Flour': { amount: 30, unit: 'g' },
+                'Dry Yeast': { amount: 0.5, unit: 'g' },
+                'Honey': { amount: 0.5, unit: 'g' }
+            };
+
+            const doughIngredients = {
+                'Water': { amount: 70, unit: 'ml' },
+                'Flour': { amount: 125, unit: 'g' },
+                'Salt': { amount: 4, unit: 'g' }
+            };
+
+            let resultHTML = '<div class="result-section">';
+            resultHTML += `<h3>Poolish for ${pizzas} pizza${pizzas > 1 ? 's' : ''}:</h3>`;
+
+            for (const [ingredient, data] of Object.entries(poolishIngredients)) {
+                const amount = (data.amount * pizzas).toFixed(2);
+                resultHTML += `
+                    <div class="ingredient">
+                        <span class="ingredient-name">${ingredient}:</span>
+                        <span>${amount} ${data.unit}</span>
+                    </div>
+                `;
+            }
+            resultHTML += '</div>';
+
+            resultHTML += '<div class="result-section">';
+            resultHTML += `<h3>Pizza Dough for ${pizzas} pizza${pizzas > 1 ? 's' : ''}:</h3>`;
+            resultHTML += `
+                <div class="ingredient">
+                    <span class="ingredient-name">Poolish:</span>
+                    <span>ALL</span>
+                </div>
+            `;
+
+            for (const [ingredient, data] of Object.entries(doughIngredients)) {
+                const amount = (data.amount * pizzas).toFixed(2);
+                resultHTML += `
+                    <div class="ingredient">
+                        <span class="ingredient-name">${ingredient}:</span>
+                        <span>${amount} ${data.unit}</span>
+                    </div>
+                `;
+            }
+            resultHTML += '</div>';
+
+            document.getElementById('result').innerHTML = resultHTML;
+        }
+    </script>
+</body></html>
